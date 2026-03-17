@@ -87,7 +87,7 @@ def check_packages(requirements_path: Path) -> list[PackageInfo]:
 
     results: list[PackageInfo] = []
     for name in package_names:
-        normalized = name.lower().replace("-", "-")
+        normalized = name.lower().replace("-", "_")
         installed = get_installed_version(name)
 
         if normalized in outdated:
@@ -100,26 +100,14 @@ def check_packages(requirements_path: Path) -> list[PackageInfo]:
                 )
             )
         else:
-            # Also check with underscore normalization
-            alt_normalized = name.lower().replace("-", "_")
-            if alt_normalized in outdated:
-                results.append(
-                    PackageInfo(
-                        name=name,
-                        installed_version=outdated[alt_normalized]["installed"],
-                        latest_version=outdated[alt_normalized]["latest"],
-                        is_outdated=True,
-                    )
+            results.append(
+                PackageInfo(
+                    name=name,
+                    installed_version=installed,
+                    latest_version=installed,
+                    is_outdated=False,
                 )
-            else:
-                results.append(
-                    PackageInfo(
-                        name=name,
-                        installed_version=installed,
-                        latest_version=installed,
-                        is_outdated=False,
-                    )
-                )
+            )
     return results
 
 
