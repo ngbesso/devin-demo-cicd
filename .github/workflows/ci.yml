@@ -60,3 +60,29 @@ jobs:
 
       - name: Run pip-audit
         run: pip-audit -r requirements.txt
+
+  dependency-check:
+    name: Dependency Freshness Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run dependency check
+        run: python scripts/dependency_check.py --requirements requirements.txt --output dependency-report.md
+
+      - name: Display report
+        run: cat dependency-report.md
+
+      - name: Upload report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-report
+          path: dependency-report.md
