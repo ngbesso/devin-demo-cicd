@@ -38,10 +38,13 @@ pytest tests/ -v
 | PUT | `/tasks/{id}` | Update a task |
 | DELETE | `/tasks/{id}` | Delete a task |
 
-## Note
+## CI/CD Pipeline
 
-This project does not have CI/CD configured yet. It needs:
-- Automated linting (ruff or flake8)
-- Automated testing on push/PR
-- Deployment pipeline
-- Security vulnerability scanning
+This project uses GitHub Actions for continuous integration. The pipeline runs automatically on every push and pull request.
+
+| Job | Tool | Description |
+|-----|------|-------------|
+| **Lint** | [Ruff](https://docs.astral.sh/ruff/) | Checks code style and runs formatter verification |
+| **Test** | [Pytest](https://docs.pytest.org/) | Runs the full test suite |
+| **Security** | [pip-audit](https://pypi.org/project/pip-audit/) | Scans dependencies for known vulnerabilities |
+| **Dependency Check** | Custom script | Reports on dependency freshness |
